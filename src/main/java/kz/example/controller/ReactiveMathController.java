@@ -3,6 +3,8 @@ package kz.example.controller;
 import kz.example.dto.Response;
 import kz.example.service.ReactiveMathService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
+import org.springframework.http.codec.json.AbstractJackson2Encoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +26,11 @@ public class ReactiveMathController {
 
     @GetMapping("table/{input}")
     public Flux<Response> multiplicationTable(@PathVariable int input) {
+        return reactiveMathService.multiplicationTable(input);
+    }
+
+    @GetMapping(value = "table/{input}/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<Response> multiplicationTableStream(@PathVariable int input) {
         return reactiveMathService.multiplicationTable(input);
     }
 }
