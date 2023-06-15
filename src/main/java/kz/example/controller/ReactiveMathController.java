@@ -1,16 +1,15 @@
 package kz.example.controller;
 
+import kz.example.dto.MultiplyRequestDto;
 import kz.example.dto.Response;
 import kz.example.service.ReactiveMathService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
-import org.springframework.http.codec.json.AbstractJackson2Encoder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("reactive-math")
@@ -32,5 +31,12 @@ public class ReactiveMathController {
     @GetMapping(value = "table/{input}/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Response> multiplicationTableStream(@PathVariable int input) {
         return reactiveMathService.multiplicationTable(input);
+    }
+
+    @PostMapping("multiply")
+    public Mono<Response> multiply(@RequestBody Mono<MultiplyRequestDto> dtoMono,
+                                   @RequestHeader Map<String, String> headers) {
+        System.out.println(headers);
+        return reactiveMathService.multiply(dtoMono);
     }
 }
