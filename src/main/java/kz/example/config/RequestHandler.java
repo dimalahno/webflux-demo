@@ -2,6 +2,7 @@ package kz.example.config;
 
 import kz.example.dto.MultiplyRequestDto;
 import kz.example.dto.Response;
+import kz.example.exception.InputValidationException;
 import kz.example.service.ReactiveMathService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -40,6 +41,15 @@ public class RequestHandler {
     public Mono<ServerResponse> multiplyHandler(ServerRequest serverRequest) {
         Mono<MultiplyRequestDto> requestDtoMono = serverRequest.bodyToMono(MultiplyRequestDto.class);
         Mono<Response> responseMono = mathService.multiply(requestDtoMono);
+        return ServerResponse.ok().body(responseMono, Response.class);
+    }
+
+    public Mono<ServerResponse> squareHandlerWithValidation(ServerRequest serverRequest) {
+        int input = Integer.parseInt(serverRequest.pathVariable("input"));
+        if(input < 10 || input > 20) {
+            return Mono.error(new InputValidationException(input));
+        }
+        Mono<Response> responseMono = mathService.findSquare(input);
         return ServerResponse.ok().body(responseMono, Response.class);
     }
 }
