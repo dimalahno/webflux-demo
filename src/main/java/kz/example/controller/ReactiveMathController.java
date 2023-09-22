@@ -33,6 +33,11 @@ public class ReactiveMathController {
         return reactiveMathService.multiplicationTable(input);
     }
 
+    @GetMapping(value = "table/{input}/streamV2", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<Response> multiplicationTableStreamV2(@PathVariable int input) {
+        return reactiveMathService.multiplicationTableStream(input);
+    }
+
     @PostMapping("multiply")
     public Mono<Response> multiply(@RequestBody Mono<MultiplyRequestDto> dtoMono,
                                    @RequestHeader Map<String, String> headers) {
