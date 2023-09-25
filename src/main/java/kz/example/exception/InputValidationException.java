@@ -1,5 +1,8 @@
 package kz.example.exception;
 
+import lombok.Getter;
+
+@Getter
 public class InputValidationException extends RuntimeException{
 
     private static final String MSG = "allowed range is 10 - 20";
@@ -15,7 +18,4 @@ public class InputValidationException extends RuntimeException{
         return errorCode;
     }
 
-    public int getInput() {
-        return input;
-    }
 }
