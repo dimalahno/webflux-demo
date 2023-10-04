@@ -11,10 +11,13 @@ public class InputValidationHandler {
 
     @ExceptionHandler(InputValidationException.class)
     public ResponseEntity<InputFailedValidationResponse> handleException(InputValidationException ex) {
-        var response = new InputFailedValidationResponse();
-        response.setErrorCode(ex.getErrorCode());
-        response.setInput(ex.getInput());
-        response.setMessage(ex.getMessage());
-        return ResponseEntity.badRequest().body(response);
+        var response = InputFailedValidationResponse.builder()
+                .errorCode(ex.getErrorCode())
+                .input(ex.getInput())
+                .message(ex.getMessage())
+                .build();
+        return ResponseEntity
+                .badRequest()
+                .body(response);
     }
 }

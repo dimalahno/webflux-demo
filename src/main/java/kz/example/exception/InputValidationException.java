@@ -17,5 +17,4 @@ public class InputValidationException extends RuntimeException{
     public int getErrorCode() {
         return errorCode;
     }
-
 }
